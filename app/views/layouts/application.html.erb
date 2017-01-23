@@ -8,6 +8,51 @@
 </head>
 <body>
 
+ <!-- NAVBAR -->
+
+  <div class="container" id="center-content">
+  <br>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" id="nav-title" href="/">Read It</a>
+      </div>
+      <div class="collapse navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+
+          <% if current_user %>
+              <li><%= link_to "Profile", user_path(current_user) %></li>
+              <li><%= link_to "Log Out", logout_path %></li>
+          <% else %>
+              <li><%= link_to "Signup", new_user_path %></li>
+              <li><%= link_to "Log In", login_path %></li>
+          <% end %>     
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+  <br>
+  <div>
+    <% flash.each do |name, msg| %>
+      <div id="flash_messages">
+      <br>
+        <div class="alert alert-info" role="alert">
+          <%= msg %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="outer">
+    <%= yield %>
+  </div>
+
+
 <%= yield %>
 
 </body>
