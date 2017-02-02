@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170124030227) do
+ActiveRecord::Schema.define(version: 20170202210514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,30 @@ ActiveRecord::Schema.define(version: 20170124030227) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
+
+  add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
+
+  create_table "invites", force: :cascade do |t|
+    t.string   "email"
+    t.integer  "group_id"
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+    t.integer  "group_id"
+  end
+
+  add_index "memberships", ["group_id"], name: "index_memberships_on_group_id", using: :btree
+  add_index "memberships", ["user_id"], name: "index_memberships_on_user_id", using: :btree
 
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -36,4 +59,7 @@ ActiveRecord::Schema.define(version: 20170124030227) do
     t.datetime "updated_at",      null: false
   end
 
+  add_foreign_key "groups", "users"
+  add_foreign_key "memberships", "groups"
+  add_foreign_key "memberships", "users"
 end
